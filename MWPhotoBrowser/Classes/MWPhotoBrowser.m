@@ -148,7 +148,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
-	if ((self = [self initWithCoder:decoder])) {
+	if ((self = [super initWithCoder:decoder])) {
         [self _initialisation];
 	}
 	return self;
@@ -410,6 +410,10 @@
         _leaveStatusBarAlone = [self presentingViewControllerPrefersStatusBarHidden];
     } else {
         _leaveStatusBarAlone = [UIApplication sharedApplication].statusBarHidden;
+    }
+    if (CGRectEqualToRect([[UIApplication sharedApplication] statusBarFrame], CGRectZero)) {
+        // If the frame is zero then definitely leave it alone
+        _leaveStatusBarAlone = YES;
     }
     if (!_leaveStatusBarAlone && self.wantsFullScreenLayout && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         _previousStatusBarStyle = [[UIApplication sharedApplication] statusBarStyle];
@@ -1267,7 +1271,7 @@
                     });
 
                     // Show
-                    __weak typeof(self) weakSelf = self;
+                    typeof(self) __weak weakSelf = self;
                     [self.activityViewController setCompletionHandler:^(NSString *activityType, BOOL completed) {
                         weakSelf.activityViewController = nil;
                         [weakSelf hideControlsAfterDelay];
