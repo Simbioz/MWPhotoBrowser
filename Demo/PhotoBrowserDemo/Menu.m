@@ -1031,6 +1031,7 @@
     browser.zoomPhotosToFill = YES;
     browser.enableGrid = enableGrid;
     browser.startOnGrid = startOnGrid;
+    browser.enableSwipeToDismiss = YES;
     [browser setCurrentPhotoIndex:0];
     
     // Reset selections
@@ -1121,9 +1122,19 @@
     return [[_selections objectAtIndex:index] boolValue];
 }
 
+//- (NSString *)photoBrowser:(MWPhotoBrowser *)photoBrowser titleForPhotoAtIndex:(NSUInteger)index {
+//    return [NSString stringWithFormat:@"Photo %lu", (unsigned long)index+1];
+//}
+
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index selectedChanged:(BOOL)selected {
     [_selections replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:selected]];
     NSLog(@"Photo at index %lu selected %@", (unsigned long)index, selected ? @"YES" : @"NO");
+}
+
+- (void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser {
+    // If we subscribe to this method we must dismiss the view controller ourselves
+    NSLog(@"Did finish modal presentation");
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - Load Assets
@@ -1169,7 +1180,7 @@
         // Process groups
         void (^ assetGroupEnumerator) (ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop) {
             if (group != nil) {
-                [group enumerateAssetsUsingBlock:assetEnumerator];
+                [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:assetEnumerator];
                 [assetGroups addObject:group];
             }
         };
