@@ -1656,7 +1656,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
 - (void)showProgressHUDWithMessage:(NSString *)message {
     self.progressHUD.labelText = message;
     self.progressHUD.mode = MBProgressHUDModeIndeterminate;
-    [self.progressHUD show:YES];
+    [self.progressHUD showAnimated:YES];
     self.navigationController.navigationBar.userInteractionEnabled = NO;
 }
 
@@ -1667,12 +1667,12 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
 
 - (void)showProgressHUDCompleteMessage:(NSString *)message {
     if (message) {
-        if (self.progressHUD.isHidden) [self.progressHUD show:YES];
+        if (self.progressHUD.isHidden) [self.progressHUD showAnimated:YES];
         self.progressHUD.labelText = message;
         self.progressHUD.mode = MBProgressHUDModeCustomView;
-        [self.progressHUD hide:YES afterDelay:1.5];
+        [self.progressHUD hideAnimated:YES afterDelay:1.5];
     } else {
-        [self.progressHUD hide:YES];
+        [self.progressHUD hideAnimated:YES];
     }
     self.navigationController.navigationBar.userInteractionEnabled = YES;
 }
