@@ -450,7 +450,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     UINavigationBar *navBar = self.navigationController.navigationBar;
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7")) {
-		navBar.tintColor = [self.view tintColor];
+		navBar.tintColor = [UIColor whiteColor];
         navBar.barTintColor = nil;
         navBar.shadowImage = nil;
     }
